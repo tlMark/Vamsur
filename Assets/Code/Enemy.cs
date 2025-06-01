@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
      void Awake()
     {
+        coll = GetComponent<Collider2D>();
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         spriter = GetComponent<SpriteRenderer>();
@@ -55,6 +56,10 @@ public class Enemy : MonoBehaviour
     {
         target = GameManager.instance.player.GetComponent<Rigidbody2D>();
         isLive = true;
+        coll.enabled = true;
+        rigid.simulated = true;
+        spriter.sortingOrder = 2;
+        anim.SetBool("Dead", false);
         health = maxHealth;
     }
 
@@ -68,13 +73,15 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if(!collision.CompareTag("Bullet"))
-        {return;}
+        if(!collision.CompareTag("Bullet") || !isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+        {
+            return;
+        }
 
         health -= collision.GetComponent<Bullet>().damage;
         StartCoroutine(KnockBack());
 
-        if(health > 0)
+        if (health > 0)
         {
             anim.SetTrigger("Hit");
         }
@@ -85,7 +92,8 @@ public class Enemy : MonoBehaviour
             rigid.simulated = false;
             spriter.sortingOrder = 1;
             anim.SetBool("Dead", true);
-            Dead();
+            GameManager.instance.kill++;
+            GameManager.instance.GetExp();
         }
     }
 

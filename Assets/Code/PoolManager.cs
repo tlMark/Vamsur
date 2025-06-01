@@ -36,7 +36,11 @@ public class PoolManager : MonoBehaviour
             select = Instantiate(prefabs[index], transform);
             pools[index].Add(select);
         }
-
+        else if (index < 0 || index >= prefabs.Length || prefabs[index] == null)
+        {
+            Debug.LogError($"PoolManager: 잘못된 인덱스({index})이거나 프리팹이 할당되지 않았습니다.");
+            return null;
+        }
         return select;
     }
 }

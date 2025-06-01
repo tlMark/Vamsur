@@ -8,6 +8,7 @@ public class Weapon : MonoBehaviour
     public int count;
     public float speed;
     float timer;
+
     Player player;
 
     void Awake()
@@ -40,7 +41,7 @@ public class Weapon : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            LevelUp(20, 5);
+            LevelUp(20, 2);
         }
     }
 

@@ -22,7 +22,7 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    void OTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if(!collision.CompareTag("Enemy") || per == -1)
         {
