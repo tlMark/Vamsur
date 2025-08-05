@@ -24,4 +24,43 @@ public class Item : MonoBehaviour
     {
         textLevel.text = "Lv." + (level + 1);
     }
+
+    public void OnClick()
+    {
+        switch (itemData.itemType)
+        {
+            case ItemData.ItemType.Melee:
+            case ItemData.ItemType.Range:
+                if (level == 0)
+                {
+                    GameObject newWeapon = new GameObject();
+                    weapon = newWeapon.AddComponent<Weapon>();
+                    weapon.Init(itemData);
+                }
+                else
+                {
+                    float nextDamage = itemData.baseDamage;
+                    int nextCount = 0;
+
+                    nextDamage += itemData.baseDamage * itemData.damages[level];
+                    nextCount += itemData.counts[level];
+
+                    weapon.LevelUp(nextDamage, nextCount);
+                }
+                break;
+            case ItemData.ItemType.Glove:
+                break;
+            case ItemData.ItemType.Shoe:
+                break;
+            case ItemData.ItemType.Heal:
+                break;
+        }
+
+        level++;
+
+        if (level == itemData.damages.Length)
+        {
+            GetComponent<Button>().interactable = false;
+        }
+    }        
 }
