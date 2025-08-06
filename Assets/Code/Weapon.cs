@@ -45,10 +45,12 @@ public class Weapon : MonoBehaviour
         this.damage = damage;
         this.count += count;
 
-        if(id == 0)
+        if (id == 0)
         {
             Batch();
         }
+        
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);   //무언가 새로운 장비를 장착했을 때, 자식 오브젝트에 해당 함수 작동케 함
     }
 
     public void Init(ItemData data)
@@ -65,7 +67,7 @@ public class Weapon : MonoBehaviour
         damage = data.baseDamage;
         count = data.baseCount;
 
-        for(int index = 0; index < GameManager.instance.pool.prefabs.Length; index++)
+        for (int index = 0; index < GameManager.instance.pool.prefabs.Length; index++)
         {
             if (data.projectile == GameManager.instance.pool.prefabs[index])
             {
@@ -85,6 +87,13 @@ public class Weapon : MonoBehaviour
                 speed = 0.3f;
                 break;
         }
+
+        //hand set
+        Hand hand = player.hands[(int)data.itemType];
+        hand.handSprite.sprite = data.hand;
+        hand.gameObject.SetActive(true);
+
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
 
     void Batch()

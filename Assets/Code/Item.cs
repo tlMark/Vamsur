@@ -7,6 +7,7 @@ public class Item : MonoBehaviour
     public ItemData itemData;
     public int level;
     public Weapon weapon;
+    public Gear gear;
 
     Image icon;
     Text textLevel;
@@ -22,7 +23,7 @@ public class Item : MonoBehaviour
 
     void LateUpdate()
     {
-        textLevel.text = "Lv." + (level + 1);
+        textLevel.text = "Lv." + (level);
     }
 
     public void OnClick()
@@ -47,16 +48,29 @@ public class Item : MonoBehaviour
 
                     weapon.LevelUp(nextDamage, nextCount);
                 }
+                level++;
                 break;
+
             case ItemData.ItemType.Glove:
-                break;
             case ItemData.ItemType.Shoe:
+                if (level == 0)
+                {
+                    GameObject newGear = new GameObject();
+                    gear = newGear.AddComponent<Gear>();
+                    gear.Init(itemData);
+                }
+                else
+                {
+                    float nextRate = itemData.damages[level];
+                    gear.LevelUp(nextRate);
+                }
+                level++;
                 break;
+                
             case ItemData.ItemType.Heal:
+                GameManager.instance.health = GameManager.instance.maxHealth;
                 break;
         }
-
-        level++;
 
         if (level == itemData.damages.Length)
         {
