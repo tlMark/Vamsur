@@ -18,15 +18,20 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
+        if (!GameManager.instance.isLive)
+        {
+            return;
+        }
+        
         switch (id)
         {
-            case 0: 
+            case 0:
                 transform.Rotate(Vector3.back * speed * Time.deltaTime);
                 break;
             default:
                 timer += Time.deltaTime;
 
-                if(timer > speed)
+                if (timer > speed)
                 {
                     timer = 0f;
                     Fire();
