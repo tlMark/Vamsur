@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Unity.VisualScripting;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     [Header("# Player Info")]
     public float health;
+    public int playerId;
     public int maxHealth = 100;
     public int level;
     public int kill;
@@ -26,26 +28,28 @@ public class GameManager : MonoBehaviour
     public PoolManager pool;
     public Player player;
     public LevelUp uiLevelUp;
-    public GameObject uiResult;
+    public GameResult uiResult;
+    public GameObject enemyCleaner;
 
     void Awake()
     {
         instance = this;
     }
 
-    public void GameStart()
+    public void GameStart(int id)
     {
         health = maxHealth;
 
-        uiLevelUp.Select(0);
-        isLive = true;
+        playerId = id;
+        player.gameObject.SetActive(true);
+        uiLevelUp.Select(playerId % 2);
+        
+        Resum();
     }
 
     public void GameOver()
     {
-        isLive = false;
-        Time.timeScale = 0f;
-        uiLevelUp.Show();
+        StartCoroutine(GameOverCoroutine());
     }
 
     IEnumerator GameOverCoroutine()
@@ -54,7 +58,25 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        uiResult.SetActive(true);
+        uiResult.gameObject.SetActive(true);
+        uiResult.ShowResultLose();
+        Stop();
+    }
+
+    public void GameClear()
+    {
+        StartCoroutine(GameClearCoroutine());
+    }
+
+    IEnumerator GameClearCoroutine()
+    {
+        isLive = false;
+        enemyCleaner.SetActive(true);
+
+        yield return new WaitForSeconds(0.5f);
+
+        uiResult.gameObject.SetActive(true);
+        uiResult.ShowResultWin();
         Stop();
     }
 
@@ -75,11 +97,17 @@ public class GameManager : MonoBehaviour
         if (gameTime > maxGameTime)
         {
             gameTime = maxGameTime;
+            GameClear();
         }
     }
 
     public void GetExp()
     {
+        if (!isLive)
+        {
+            return;
+        }
+
         exp++;
 
         if (exp == nextExp[Mathf.Min(level, nextExp.Length)])

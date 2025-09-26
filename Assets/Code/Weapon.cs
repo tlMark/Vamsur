@@ -61,16 +61,14 @@ public class Weapon : MonoBehaviour
     public void Init(ItemData data)
     {
         //basic set
-
         name = "Weapon_" + data.itemID;
         transform.parent = player.transform;
         transform.localPosition = Vector3.zero;
 
         //property set
-
         id = data.itemID;
-        damage = data.baseDamage;
-        count = data.baseCount;
+        damage = data.baseDamage * Character.WeaponDamage;
+        count = data.baseCount + Character.WeaponCount;
 
         for (int index = 0; index < GameManager.instance.pool.prefabs.Length; index++)
         {
@@ -84,12 +82,12 @@ public class Weapon : MonoBehaviour
         switch (id)
         {
             case 0:
-                speed = 150;
+                speed = 150 * Character.WeaponSpeedRate;
                 Batch();
                 break;
             //case 1:
             default:
-                speed = 0.3f;
+                speed = 0.5f * Character.WeaponRate;
                 break;
         }
 

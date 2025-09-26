@@ -15,6 +15,11 @@ public class Reposition : MonoBehaviour
             return;
         }
 
+        if (!GameManager.instance.isLive)
+        {
+            return;
+        }
+
         // 플레이어와 오브젝트의 위치 차이 계산
         Vector3 playerPos = GameManager.instance.player.transform.position;
         Vector3 myPos = transform.position;
