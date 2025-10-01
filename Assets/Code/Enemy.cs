@@ -65,6 +65,7 @@ public class Enemy : MonoBehaviour
     void OnEnable()
     {
         target = GameManager.instance.player.GetComponent<Rigidbody2D>();
+
         isLive = true;
         coll.enabled = true;
         rigid.simulated = true;
@@ -94,6 +95,7 @@ public class Enemy : MonoBehaviour
         if (health > 0)
         {
             anim.SetTrigger("Hit");
+            AudioManger.instance.PlaySfx(AudioManger.SFX.Hit);
         }
         else
         {
@@ -102,8 +104,14 @@ public class Enemy : MonoBehaviour
             rigid.simulated = false;
             spriter.sortingOrder = 1;
             anim.SetBool("Dead", true);
+
             GameManager.instance.kill++;
             GameManager.instance.GetExp();
+
+            if (GameManager.instance.isLive)
+            {
+                AudioManger.instance.PlaySfx(AudioManger.SFX.Dead);
+            }
         }
     }
 

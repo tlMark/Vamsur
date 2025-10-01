@@ -15,14 +15,21 @@ public class LevelUp : MonoBehaviour
     public void Show()
     {
         Next();
+
         rectTransform.localScale = Vector3.one;
+
         GameManager.instance.Stop();
+        AudioManger.instance.PlaySfx(AudioManger.SFX.LevelUp);
+        AudioManger.instance.HighPassBgm(true);
     }
 
     public void Hide()
     {
         rectTransform.localScale = Vector3.zero;
+
         GameManager.instance.Resum();
+        AudioManger.instance.PlaySfx(AudioManger.SFX.Select);
+        AudioManger.instance.HighPassBgm(false);
     }
 
     public void Select(int index)

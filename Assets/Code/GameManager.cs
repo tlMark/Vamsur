@@ -35,6 +35,22 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
     }
+    
+    void Update()
+    {
+        if (!isLive)
+        {
+            return;
+        }
+
+        gameTime += Time.deltaTime;
+
+        if (gameTime > maxGameTime)
+        {
+            gameTime = maxGameTime;
+            GameClear();
+        }
+    }
 
     public void GameStart(int id)
     {
@@ -43,8 +59,11 @@ public class GameManager : MonoBehaviour
         playerId = id;
         player.gameObject.SetActive(true);
         uiLevelUp.Select(playerId % 2);
-        
+
         Resum();
+
+        AudioManger.instance.PlayBgm(true);
+        AudioManger.instance.PlaySfx(AudioManger.SFX.Select);
     }
 
     public void GameOver()
@@ -61,6 +80,9 @@ public class GameManager : MonoBehaviour
         uiResult.gameObject.SetActive(true);
         uiResult.ShowResultLose();
         Stop();
+
+        AudioManger.instance.PlayBgm(false);
+        AudioManger.instance.PlaySfx(AudioManger.SFX.Lose);
     }
 
     public void GameClear()
@@ -78,27 +100,14 @@ public class GameManager : MonoBehaviour
         uiResult.gameObject.SetActive(true);
         uiResult.ShowResultWin();
         Stop();
+
+        AudioManger.instance.PlayBgm(false);
+        AudioManger.instance.PlaySfx(AudioManger.SFX.Win);
     }
 
     public void GameRetry()
     {
         SceneManager.LoadScene(0);
-    }
-
-    void Update()
-    {
-        if (!isLive)
-        {
-            return;
-        }
-
-        gameTime += Time.deltaTime;
-
-        if (gameTime > maxGameTime)
-        {
-            gameTime = maxGameTime;
-            GameClear();
-        }
     }
 
     public void GetExp()
