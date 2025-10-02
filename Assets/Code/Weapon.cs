@@ -22,7 +22,7 @@ public class Weapon : MonoBehaviour
         {
             return;
         }
-        
+
         switch (id)
         {
             case 0:
@@ -45,6 +45,52 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    void Batch()
+    {
+        for (int index = 0; index < count; index++)
+        {
+            Transform bullet;
+
+            if (index < transform.childCount)
+            {
+                bullet = transform.GetChild(index);
+            }
+            else
+            {
+                bullet = GameManager.instance.pool.Get(prefabId).transform;
+                bullet.parent = transform;
+            }
+
+            bullet.localPosition = Vector3.zero;
+            bullet.localRotation = Quaternion.identity;
+
+            Vector3 rotVec = Vector3.forward * 360 * index / count;
+            bullet.Rotate(rotVec);
+            bullet.Translate(bullet.up * 1.5f, Space.World);
+
+            bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero);
+        }
+    }
+
+    void Fire()
+    {
+        if (!player.scanner.nearestTarget)
+        {
+            return;
+        }
+
+        Vector3 targetPos = player.scanner.nearestTarget.position;
+        Vector3 dir = targetPos - transform.position;
+        dir = dir.normalized;
+
+        Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
+        bullet.position = transform.position;
+        bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+        bullet.GetComponent<Bullet>().Init(damage, count, dir);
+
+        AudioManger.instance.PlaySfx(AudioManger.SFX.Range);
+    }
+    
     public void LevelUp(float damage, int count)
     {
         this.damage = damage;
@@ -97,51 +143,5 @@ public class Weapon : MonoBehaviour
         hand.gameObject.SetActive(true);
 
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
-    }
-
-    void Batch()
-    {
-        for (int index = 0; index < count; index++)
-        {
-            Transform bullet;
-
-            if(index < transform.childCount)
-            {
-                bullet = transform.GetChild(index);
-            }
-            else
-            {
-                bullet = GameManager.instance.pool.Get(prefabId).transform;
-                bullet.parent = transform;
-            }
-
-            bullet.localPosition = Vector3.zero;
-            bullet.localRotation = Quaternion.identity;
-
-            Vector3 rotVec = Vector3.forward * 360 * index / count;
-            bullet.Rotate(rotVec);
-            bullet.Translate(bullet.up * 1.5f, Space.World);
-
-            bullet.GetComponent<Bullet>().Init(damage, -1, Vector3.zero);
-        }
-    }
-
-    void Fire()
-    {
-        if (!player.scanner.nearestTarget)
-        {
-            return;
-        }
-
-        Vector3 targetPos = player.scanner.nearestTarget.position;
-        Vector3 dir = targetPos - transform.position;
-        dir = dir.normalized;
-
-        Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
-        bullet.position = transform.position;
-        bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
-        bullet.GetComponent<Bullet>().Init(damage, count, dir);
-
-        AudioManger.instance.PlaySfx(AudioManger.SFX.Range);
     }
 }

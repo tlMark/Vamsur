@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.VisualScripting;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,7 +21,7 @@ public class GameManager : MonoBehaviour
     public int level;
     public int kill;
     public int exp;
-    public int[] nextExp = { 10, 30, 60, 100, 150, 200, 250, 300, 400, 550 };
+    public int[] nextExp = { 7, 14, 21, 28, 35, 42, 49, 56, 63, 70 };
 
     [Header("# Game Object")]
     public PoolManager pool;
@@ -30,6 +29,7 @@ public class GameManager : MonoBehaviour
     public LevelUp uiLevelUp;
     public GameResult uiResult;
     public GameObject enemyCleaner;
+    public Transform uiJoystick;
 
     void Awake()
     {
@@ -110,6 +110,12 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
+    public void GameQuit()
+    {
+        Application.Quit();
+    }
+
+
     public void GetExp()
     {
         if (!isLive)
@@ -131,11 +137,13 @@ public class GameManager : MonoBehaviour
     {
         isLive = false;
         Time.timeScale = 0f;
+        uiJoystick.localScale = Vector3.zero;
     }
-    
+
     public void Resum()
     {
         isLive = true;
         Time.timeScale = 1f;
+        uiJoystick.localScale = Vector3.one;
     }
 }

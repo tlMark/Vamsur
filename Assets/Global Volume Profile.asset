@@ -207,10 +207,10 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.2
   response:
     m_OverrideState: 1
-    m_Value: 0.8
+    m_Value: 0.7
   texture:
     m_OverrideState: 1
     m_Value: {fileID: 0}
@@ -309,10 +309,10 @@ MonoBehaviour:
     m_Value: 0.9
   intensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 4
   scatter:
     m_OverrideState: 1
-    m_Value: 0.7
+    m_Value: 0.3
   clamp:
     m_OverrideState: 1
     m_Value: 65472
@@ -484,7 +484,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: DefaultVolumeProfile
+  m_Name: Global Volume Profile
   m_EditorClassIdentifier: 
   components:
   - {fileID: 1247868777620691934}
@@ -767,10 +767,10 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.3
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.2
+    m_Value: 0.25
   rounded:
     m_OverrideState: 1
     m_Value: 0
