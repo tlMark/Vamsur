@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Vamsur.sln"
+    "dotnet.defaultSolution": "Vamsur.slnx"
 }
