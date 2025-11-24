@@ -29,7 +29,6 @@ public class Gear : MonoBehaviour
     {
         switch (type)
         {
-           
             case ItemData.ItemType.Glove:
                 RateUp();
                 break;

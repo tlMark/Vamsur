@@ -38,11 +38,12 @@ public class Weapon : MonoBehaviour
                 }
                 break;
         }
-
+        /*
         if (Input.GetButtonDown("Jump"))
         {
             LevelUp(20, 2);
         }
+        */
     }
 
     void Batch()

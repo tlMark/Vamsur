@@ -55,12 +55,14 @@ public class GameManager : MonoBehaviour
     public void GameStart(int id)
     {
         health = maxHealth;
+        level = 1;
+        exp = 0;
 
         playerId = id;
         player.gameObject.SetActive(true);
         uiLevelUp.Select(playerId % 2);
 
-        Resum();
+        Resume();
 
         AudioManger.instance.PlayBgm(true);
         AudioManger.instance.PlaySfx(AudioManger.SFX.Select);
@@ -125,11 +127,15 @@ public class GameManager : MonoBehaviour
 
         exp++;
 
-        if (exp == nextExp[Mathf.Min(level, nextExp.Length)])
+        if (level < nextExp.Length)
         {
-            level++;
-            exp = 0;
-            uiLevelUp.Show();
+        // 다음 레벨에 도달했는지 확인 (현재 level을 인덱스로 사용)
+            if (exp >= nextExp[level])
+            {
+                level++;
+                exp = 0;
+                uiLevelUp.Show();
+            }
         }
     }
 
@@ -140,7 +146,7 @@ public class GameManager : MonoBehaviour
         uiJoystick.localScale = Vector3.zero;
     }
 
-    public void Resum()
+    public void Resume()
     {
         isLive = true;
         Time.timeScale = 1f;

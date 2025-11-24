@@ -27,7 +27,7 @@ public class LevelUp : MonoBehaviour
     {
         rectTransform.localScale = Vector3.zero;
 
-        GameManager.instance.Resum();
+        GameManager.instance.Resume();
         AudioManger.instance.PlaySfx(AudioManger.SFX.Select);
         AudioManger.instance.HighPassBgm(false);
     }
